@@ -11,7 +11,7 @@ type
   public
     procedure Write(_AMessage: String);
     class function GetInstance: TLogger;
-    class procedure FinalizeInstance;
+    class procedure DestroyInstance;
   end;
 
 implementation
@@ -27,7 +27,7 @@ begin
 
 end;
 
-class procedure TLogger.FinalizeInstance;
+class procedure TLogger.DestroyInstance;
 begin
   TMonitor.Enter(TLogger.FLock);
   try
@@ -62,7 +62,7 @@ initialization
   TLogger.FLock := TObject.Create;
 
 finalization
-  TLogger.FinalizeInstance;
+  TLogger.DestroyInstance;
   FreeAndNil(TLogger.FLock);
 
 end.
